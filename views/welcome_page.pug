@@ -1,0 +1,21 @@
+extends resource
+
+block body
+    body.welcome_page
+        div.container
+            div.row
+                div.col-xl-2
+                div.col-xl-8
+                    h1#welcome_title Create your own artwork with our powerful AI!
+                div.col-xl-2
+
+            br
+            br
+            br
+            div.row
+                div.col-xl-3
+                div.col-xl-3
+                    input(type="button" onclick="window.open('/sign_up_page', '_self')" value="Sign up")
+                div.col-xl-3
+                    input(type="button" onclick="window.open('/login_page', '_self')" value="Login")
+                div.col-xl-3

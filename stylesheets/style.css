@@ -1,0 +1,34 @@
+h1#welcome_title {
+    font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+    font-size: 60px;
+    text-align: center;
+    color: white;
+    text-shadow: 5px 5px 10px black;
+    padding-top: 15rem;
+}
+
+body.welcome_page {
+    background-image: url('../images/background_welcome.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+input[type=submit], input[type=button] {
+    font-family: 'Helvetica', serif;
+    font-size: 20px;
+    width: 100%;
+    background-color: #0080FF;
+    border: none;
+    color: white;
+    padding: 16px 8px;
+    margin: 4px 0;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+input[type=submit]:hover, input[type=button]:hover {
+    background-color: #004080;
+    transform: scale(1.1);
+    backface-visibility: hidden;
+}
