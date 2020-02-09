@@ -70,6 +70,20 @@ input[class=box] {
     border-bottom: 2px solid #767474;
 }
 
+.profile_photo_top_left {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    cursor: pointer;
+    margin: 10px 10px;
+    border: 5px solid #73AD21;
+    transition: 0.5s;
+}
+
+.profile_photo_top_left:hover {
+    filter: brightness(50%);
+}
+
 #my_message {
     width: 125px;
     background-color: #73AD21;
@@ -89,15 +103,4 @@ input[class=box] {
 
 #logout:hover {
     background-color: #804000;
-}
-
-#search {
-    margin: 0 0;
-    font-size: 30px;
-    padding: 8px 8px;
-    background-color: #ff80ff;
-}
-
-#search:hover {
-    background-color: #804080;
 }

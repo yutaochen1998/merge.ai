@@ -126,3 +126,19 @@ app.post('/login', function(req, res) {
         }
     });
 });
+
+//render main activity page
+app.get('/main_activity', function(req, res) {
+    res.render('main_activity', {
+        title: "Merge.AI",
+        profile_photo_top_left: req.session.profile_photo_data,
+        profile_photo_content_type_top_left: req.session.profile_photo_content_type
+    });
+});
+
+//handle logout request
+app.get('/logout', function(req, res) {
+    req.session.destroy();
+    console.log('Logout successful');
+    res.redirect('/');
+});
