@@ -1,0 +1,29 @@
+extends resource
+
+block body
+    body.general_page
+        br
+        br
+        br
+        div.container
+            div.row
+                div.col-xl-3
+                div(class="col-xl-6 main")
+                    form(action="/login" method="post")
+                        h1 Login
+
+                        label(for="email_login") Email
+                        input(class="box" type="email" name="email_login" id="email_login"
+                            placeholder="explame@123.com" required)
+                        br
+
+                        label(for="password_login") Password
+                        input(class="box" type="password" name="password_login" id="password_login"
+                            placeholder="Enter your password" required)
+                        br
+
+                        input(type="submit" value="Login")
+                        br
+                    input(type="button" onclick="history.back()" value="Return")
+
+                div.col-xl-3

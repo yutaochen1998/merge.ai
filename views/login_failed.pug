@@ -1,0 +1,15 @@
+extends resource
+
+block body
+    body.general_page
+        br
+        br
+        br
+        div.container
+            div.row
+                div.col-xl-3
+                div(class="col-xl-6 main")
+                    h1 #{error_message}
+                    p.message Check your login info.
+                    input(type="button" onclick="history.back()" value="Return")
+                div.col-xl-3

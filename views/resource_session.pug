@@ -1,0 +1,22 @@
+extends resource
+
+block body
+    body.general_page
+        table(style="width:800px")
+            tr
+                th
+                    img(src="data:" + profile_photo_content_type_top_left + ";base64," + profile_photo_top_left
+                        class="profile_photo_top_left" onclick="window.open('/personal_info', '_self')" alt="Unknown Error")
+                th
+                    input(type="button" onclick="window.open('/my_message', '_blank')" id="my_message" value="Message📩")
+                th
+                    input(type="button" onclick="window.open('/start_friendship', '_self')" id="home" value="Home🏠")
+                th
+                    input(type="button" onclick="window.open('/logout', '_self')" id="logout" value="Logout🚪")
+                th
+                    form(action="/search_by_email" target="_blank" method="post" id="search_by_email")
+                        input(class="box" type="text" name="email_search"
+                            placeholder="Search by E-Mail" required)
+                th
+                    input(form="search_by_email" type="submit" id="search" value="🔎")
+        block content

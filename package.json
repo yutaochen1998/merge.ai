@@ -10,7 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "latest",
     "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "express-ws": "^4.0.0",
+    "mongoose": "^5.8.11",
     "pug": "^2.0.4"
+  },
+  "devDependencies": {
+    "express-session": "^1.17.0"
   }
 }
