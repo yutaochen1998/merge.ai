@@ -1,0 +1,30 @@
+extends resource_session
+
+block content
+    div.container
+        h1 My Account
+        br
+
+    div.row
+        div.col-xl-3
+        div(class="col-xl-6 main")
+            div.row
+                div.col-xl-6
+                    p.info User ID: #{userID}
+                    br
+                    p.info Username: #{username}
+                div.col-xl-6
+                    p.info Profile Photo:
+                    img(src="data:" + profile_photo_content_type + ";base64," + profile_photo
+                        class="profile_photo" alt="Unknown Error")
+
+            div.row
+                div.col-xl-3
+                    input(type="button" onclick="window.open('/change_username_page', '_self')" value="Change Username")
+                div.col-xl-3
+                    input(type="button" onclick="window.open('/change_password_page', '_self')" value="Change Password")
+                div.col-xl-3
+                    input(type="button" onclick="window.open('/main_activity', '_self')" value="Return")
+                div.col-xl-3
+                    input(class = "delete" type="button" onclick="window.open('/delete_account_confirm', '_self')" value="Delete Account")
+        div.col-xl-3

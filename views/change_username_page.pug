@@ -1,0 +1,15 @@
+extends resource_session
+
+block content
+    div.container
+        div.row
+            div.col-xl-3
+            div(class="col-xl-6 main")
+                form(action="/change_username" method="post")
+                    h1 Change username
+                    input(class="box" type="text" name="username_change" id="username_change"
+                        placeholder="Enter new username" required)
+                    input(type="submit" value="Submit")
+
+                input(type="button" onclick="history.back()" value="Cancel")
+            div.col-xl-3

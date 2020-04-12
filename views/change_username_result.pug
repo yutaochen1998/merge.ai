@@ -1,0 +1,11 @@
+extends resource_session
+
+block content
+    div.container
+        div.row
+            div.col-xl-3
+            div(class="col-xl-6 main")
+                h1 #{title}
+                p.message #{message}
+                input(type="button" onclick="window.open('account_info', '_self')" value="Return")
+            div.col-xl-3

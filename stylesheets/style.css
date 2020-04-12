@@ -13,6 +13,10 @@ p.message {
     text-align: center;
 }
 
+p.info {
+    font-size: 30px;
+}
+
 h1 {
     font-family: 'Helvetica', serif;
     font-size: 40px;
@@ -70,6 +74,20 @@ input[class=box] {
     border-bottom: 2px solid #767474;
 }
 
+input.delete {
+    background-color: #ff0000;
+}
+
+input.delete:hover {
+    background-color: #800000;
+}
+
+.profile_photo {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
 .profile_photo_top_left {
     width: 75px;
     height: 75px;
@@ -84,11 +102,11 @@ input[class=box] {
     filter: brightness(50%);
 }
 
-#my_message {
+#account {
     width: 125px;
     background-color: #73AD21;
 }
-#my_message:hover {
+#account:hover {
     background-color: #3a5711;
 }
 
