@@ -117,11 +117,7 @@ app.post('/login', function(req, res) {
                 req.session.profile_photo_data = result.profile_photo.data;
                 req.session.profile_photo_content_type = result.profile_photo.content_type;
                 console.log("Login successful, user ID: " + req.session.email);
-                res.render('main_activity', {
-                    title: "Merge.AI",
-                    profile_photo_top_left: req.session.profile_photo_data,
-                    profile_photo_content_type_top_left: req.session.profile_photo_content_type
-                });
+                res.redirect('/main_activity');
             }
         }
     });
@@ -136,8 +132,10 @@ app.get('/main_activity', function(req, res) {
         // Do something with the data returned from python script
         console.log(data.toString());
     });
+
     res.render('main_activity', {
         title: "Merge.AI",
+        username: req.session.username,
         profile_photo_top_left: req.session.profile_photo_data,
         profile_photo_content_type_top_left: req.session.profile_photo_content_type
     });
@@ -266,6 +264,36 @@ app.get('/delete_account', function(req, res) {
     });
     console.log('Account delete successful, user ID: ' + req.session.email);
     res.redirect('/logout');
+});
+
+//render merge image page
+app.get('/merge_page', function (req, res) {
+    res.render('merge_page', {
+        title: 'Compose your art work',
+
+        profile_photo_content_type_top_left: req.session.profile_photo_content_type,
+        profile_photo_top_left: req.session.profile_photo_data
+    });
+});
+
+//render tutorial page
+app.get('/tutorial_page', function (req, res) {
+    res.render('tutorial_page', {
+        title: 'Tutorial',
+
+        profile_photo_content_type_top_left: req.session.profile_photo_content_type,
+        profile_photo_top_left: req.session.profile_photo_data
+    });
+});
+
+//render gallery page
+app.get('/gallery_page', function (req, res) {
+    res.render('gallery_page', {
+        title: 'Gallery',
+
+        profile_photo_content_type_top_left: req.session.profile_photo_content_type,
+        profile_photo_top_left: req.session.profile_photo_data
+    });
 });
 
 //handle logout request

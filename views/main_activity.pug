@@ -1,3 +1,20 @@
 extends resource_session
 
 block content
+    div.container
+        div.row
+            div.col-xl-2
+            div.col-xl-8
+                h1#main_title Hi, #{username}! What would you like to do?
+            div.col-xl-2
+
+        br
+        br
+        br
+        div.row
+            div.col-xl-4
+                input(class= "start" type="button" onclick="window.open('/merge_page', '_self')" value="Start🖌️")
+            div.col-xl-4
+                input(type="button" onclick="window.open('/tutorial_page', '_self')" value="Tutorial🧩")
+            div.col-xl-4
+                input(type="button" onclick="window.open('/gallery_page', '_self')" value="Gallery🎬")

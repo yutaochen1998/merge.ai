@@ -31,6 +31,14 @@ h1#welcome_title {
     padding-top: 15rem;
 }
 
+h1#main_title {
+    font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+    font-size: 60px;
+    color: black;
+    text-shadow: 5px 5px 10px black;
+    padding-top: 12rem;
+}
+
 body.welcome_page {
     background-image: url('../images/background_welcome.jpg');
     background-repeat: no-repeat;
@@ -82,6 +90,14 @@ input.delete:hover {
     background-color: #800000;
 }
 
+input.start {
+    background-color: #ff00ff;
+}
+
+input.start:hover {
+    background-color: #800080;
+}
+
 .profile_photo {
     width: 75px;
     height: 75px;
@@ -121,4 +137,9 @@ input.delete:hover {
 
 #logout:hover {
     background-color: #804000;
+}
+
+.banner {
+    width: 100%;
+    transition: 0.5s;
 }
