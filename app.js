@@ -125,14 +125,6 @@ app.post('/login', function(req, res) {
 
 //render main activity page
 app.get('/main_activity', function(req, res) {
-    // Testing python script
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python',["C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/test.py"]);
-    pythonProcess.stdout.on('data', (data) => {
-        // Do something with the data returned from python script
-        console.log(data.toString());
-    });
-
     res.render('main_activity', {
         title: "Merge.AI",
         username: req.session.username,
@@ -274,6 +266,47 @@ app.get('/merge_page', function (req, res) {
         profile_photo_content_type_top_left: req.session.profile_photo_content_type,
         profile_photo_top_left: req.session.profile_photo_data
     });
+});
+
+app.post('/merge_image', function(req, res) {
+    if (req.files) {
+        if (req.files.target_image && req.files.style_image) {
+            /*
+            req.session.target_image = Buffer.from(req.files.target_image.data).toString('base64');
+            req.session.target_image_type = req.files.target_image.mimetype.split("/")[1];
+            req.session.style_image = Buffer.from(req.files.style_image.data).toString('base64');
+            req.session.style_image_type = req.files.style_image.mimetype.split("/")[1];
+             */
+
+            //to be changed to random name
+            const target_image_name = "target_01." + req.files.target_image.mimetype.split("/")[1];
+            const style_image_name = "style_01." + req.files.style_image.mimetype.split("/")[1];
+            const result_image_name = "result_01.png";
+
+            fs.writeFile("temp/" + target_image_name, Buffer.from(req.files.target_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
+                if (err) throw err;
+                console.log('target image created');
+            });
+            fs.writeFile("temp/" + style_image_name, Buffer.from(req.files.style_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
+                if (err) throw err;
+                console.log('style image created');
+            });
+
+            const spawn = require("child_process").spawn;
+            const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
+            const path_prefix = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/temp/";
+            const target_path = path_prefix + target_image_name;
+            const style_path = path_prefix + style_image_name;
+            const result_path = path_prefix + result_image_name;
+            const pythonProcess = spawn('python',[neural_network_path, target_path, style_path, result_path]);
+            pythonProcess.stdout.on('data', (data) => {
+                // Do something with the data returned from python script
+                console.log(data.toString());
+            });
+        }
+    }
+    //something to do
+    res.redirect("/merge_page")
 });
 
 //render tutorial page

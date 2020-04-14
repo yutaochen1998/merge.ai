@@ -143,3 +143,9 @@ input.start:hover {
     width: 100%;
     transition: 0.5s;
 }
+
+.image_select {
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+}

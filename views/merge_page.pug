@@ -1,3 +1,21 @@
 extends resource_session
 
 block content
+    div.container
+        div.row
+            div(class="col-xl-12 main")
+                form(action="/merge_image" id="image_select" method="post" enctype="multipart/form-data")
+                    div.row
+                        div.col-xl-6
+                            img(src="../images/personal_info_banner.jpg" class="image_select" alt="Unknown error")
+                            input(type="file" name="target_image" accept="image/*")
+                        div.col-xl-6
+                            img(src="../images/personal_info_banner.jpg" class="image_select" alt="Unknown error")
+                            input(type="file" name="style_image" accept="image/*")
+                br
+
+                div.row
+                    div.col-xl-4
+                    div.col-xl-4
+                        input(class="start" form="image_select" type="submit" value="Merge🎨")
+                    div.col-xl-4
