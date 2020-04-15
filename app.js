@@ -259,8 +259,8 @@ app.get('/delete_account', function(req, res) {
 });
 
 //render merge image page
-app.get('/merge_page', function (req, res) {
-    res.render('merge_page', {
+app.get('/merge_image_page', function (req, res) {
+    res.render('merge_image_page', {
         title: 'Compose your art work',
 
         profile_photo_content_type_top_left: req.session.profile_photo_content_type,
@@ -269,44 +269,101 @@ app.get('/merge_page', function (req, res) {
 });
 
 app.post('/merge_image', function(req, res) {
-    if (req.files) {
-        if (req.files.target_image && req.files.style_image) {
-            /*
-            req.session.target_image = Buffer.from(req.files.target_image.data).toString('base64');
-            req.session.target_image_type = req.files.target_image.mimetype.split("/")[1];
-            req.session.style_image = Buffer.from(req.files.style_image.data).toString('base64');
-            req.session.style_image_type = req.files.style_image.mimetype.split("/")[1];
-             */
+    if (req.files && req.files.target_image && req.files.style_image) {
+        /*
+        req.session.target_image = Buffer.from(req.files.target_image.data).toString('base64');
+        req.session.target_image_type = req.files.target_image.mimetype.split("/")[1];
+        req.session.style_image = Buffer.from(req.files.style_image.data).toString('base64');
+        req.session.style_image_type = req.files.style_image.mimetype.split("/")[1];
+         */
 
-            //to be changed to random name
-            const target_image_name = "target_01." + req.files.target_image.mimetype.split("/")[1];
-            const style_image_name = "style_01." + req.files.style_image.mimetype.split("/")[1];
-            const result_image_name = "result_01.png";
+        //randomly generated string
+        const target_image_name = crypto.randomBytes(16).toString('hex') + "." + req.files.target_image.mimetype.split("/")[1];
+        const style_image_name = crypto.randomBytes(16).toString('hex') + "." + req.files.style_image.mimetype.split("/")[1];
+        const result_image_name = crypto.randomBytes(16).toString('hex') + ".png";
 
-            fs.writeFile("temp/" + target_image_name, Buffer.from(req.files.target_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
-                if (err) throw err;
-                console.log('target image created');
-            });
-            fs.writeFile("temp/" + style_image_name, Buffer.from(req.files.style_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
-                if (err) throw err;
-                console.log('style image created');
-            });
+        fs.writeFile("temp/" + target_image_name, Buffer.from(req.files.target_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
+            if (err) throw err;
+            console.log('target image created');
+        });
+        fs.writeFile("temp/" + style_image_name, Buffer.from(req.files.style_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
+            if (err) throw err;
+            console.log('style image created');
+        });
 
-            const spawn = require("child_process").spawn;
-            const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
-            const path_prefix = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/temp/";
-            const target_path = path_prefix + target_image_name;
-            const style_path = path_prefix + style_image_name;
-            const result_path = path_prefix + result_image_name;
-            const pythonProcess = spawn('python',[neural_network_path, target_path, style_path, result_path]);
-            pythonProcess.stdout.on('data', (data) => {
-                // Do something with the data returned from python script
-                console.log(data.toString());
-            });
-        }
+        const path_prefix = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/temp/";
+        req.session.target_path = path_prefix + target_image_name;
+        req.session.style_path = path_prefix + style_image_name;
+        req.session.result_path = path_prefix + result_image_name;
+
+        /*
+        const spawn = require("child_process").spawn;
+        const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
+        const pythonProcess = spawn('python',[neural_network_path, target_path, style_path, result_path]);
+        pythonProcess.stdout.on('data', (data) => {
+            // Do something with the data returned from python script
+            console.log(data.toString());
+        });
+
+         */
+        res.render('deliver_page', {
+            title: 'Wait for the magic',
+
+            profile_photo_content_type_top_left: req.session.profile_photo_content_type,
+            profile_photo_top_left: req.session.profile_photo_data
+        });
+    } else {
+        res.redirect("/merge_image_page")
     }
-    //something to do
-    res.redirect("/merge_page")
+});
+
+//handle real-time feedback
+let connections = {};
+app.ws('/websocket_image_deliver', (ws, req) => {
+
+    const userID = req.session.email;
+
+    //push connected instance
+    connections[userID] = ws;
+    console.log("Client connected to websocket, user ID: " + userID);
+
+    const spawn = require("child_process").spawn;
+    const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
+    const pythonProcess = spawn('python',[neural_network_path, req.session.target_path, req.session.style_path, req.session.result_path]);
+    pythonProcess.stdout.on('data', (data) => {
+        // Do something with the data returned from python script
+        console.log(data.toString());
+        ws.send(JSON.stringify({result_path: "../temp" + req.session.result_path.split("temp")[1]}));
+
+    });
+
+    ws.on('message', data => {
+
+        const data_parsed = JSON.parse(data);
+
+        if (data_parsed.message) {
+           console.log("Message received: " + data_parsed.message);
+           ws.send(JSON.stringify({message: data_parsed.message}));
+           console.log("Message sent: " + data_parsed.message);
+        }
+    });
+
+    ws.on('close', () => {
+        //delete disconnected instance
+        delete connections[userID];
+        console.log("Client disconnected to websocket, user ID: " + userID);
+        for (let path of [req.session.target_path, req.session.style_path, req.session.result_path]) {
+            fs.unlink(path, (err) => {
+                if (err && err.code === 'ENOENT') {
+                    console.log("File doesn't exist, nothing to be done");
+                } else if (err) {
+                    throw err;
+                } else {
+                    console.log("File removed: " + path);
+                }
+            })
+        }
+    });
 });
 
 //render tutorial page

@@ -19,11 +19,8 @@ def tensor_to_image(tensor):
 #binary_style = base64.b64decode(sys.argv[1])
 
 content_image_path = sys.argv[1]
-print(sys.argv[1])
 style_image_path = sys.argv[2]
-print(sys.argv[2])
 merged_image_path = sys.argv[3]
-print(sys.argv[3])
 
 #content_image = np.asarray(bytearray(binary_content), dtype="uint8")
 #style_image = np.asarray(bytearray(binary_style), dtype="uint8")
@@ -50,4 +47,4 @@ outputs = hub_module(tf.constant(content_image), tf.constant(style_image))
 stylized_image = outputs[0]
 result = tensor_to_image(stylized_image)
 result.save(merged_image_path)
-print("*********** Finished ************")
+print("completed")

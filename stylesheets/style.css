@@ -145,7 +145,10 @@ input.start:hover {
 }
 
 .image_select {
-    width: 500px;
+    width: 100%;
     height: 500px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     object-fit: contain;
 }

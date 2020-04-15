@@ -1,0 +1,24 @@
+extends resource_session
+
+block content
+    script(src="../javascripts/image_deliver.js")
+    div.container
+        div.row
+            div(class="col-xl-12 main")
+                div.row
+                    div.col-xl-6
+                        h1 Target
+                        img(src="../images/personal_info_banner.jpg" class="image_select" alt="Unknown error")
+                    div.col-xl-6
+                        h1 Style
+                        img(src="../images/personal_info_banner.jpg" class="image_select" alt="Unknown error")
+                div.row
+                    div.col-xl-12
+                        h1 Result
+                        img(id="image_result" src="../images/personal_info_banner.jpg" class="image_select" alt="Unknown error")
+                br
+                div.row
+                    div.col-xl-4
+                    div.col-xl-4
+                        input(type="button" onclick="window.open('/merge_image_page', '_self')" value="Try a new one🔙")
+                    div.col-xl-4
