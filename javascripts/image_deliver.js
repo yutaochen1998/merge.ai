@@ -8,7 +8,6 @@ $(document).ready(function() {
         //do something
     };
 
-    //update chat window and online number
     connection.onmessage = (event) => {
 
         const data_parsed = JSON.parse(event.data);

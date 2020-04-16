@@ -308,9 +308,10 @@ app.post('/merge_image', function(req, res) {
          */
         res.render('deliver_page', {
             title: 'Wait for the magic',
-
             profile_photo_content_type_top_left: req.session.profile_photo_content_type,
-            profile_photo_top_left: req.session.profile_photo_data
+            profile_photo_top_left: req.session.profile_photo_data,
+            target_image_preview: "../temp" + req.session.target_path.split("temp")[1],
+            style_image_preview: "../temp" + req.session.style_path.split("temp")[1]
         });
     } else {
         res.redirect("/merge_image_page")
@@ -332,7 +333,7 @@ app.ws('/websocket_image_deliver', (ws, req) => {
     const pythonProcess = spawn('python',[neural_network_path, req.session.target_path, req.session.style_path, req.session.result_path]);
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
-        console.log(data.toString());
+        console.log(data.toString().trim());
         ws.send(JSON.stringify({result_path: "../temp" + req.session.result_path.split("temp")[1]}));
 
     });

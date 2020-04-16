@@ -1,6 +1,7 @@
 extends resource_session
 
 block content
+    script(src="../javascripts/image_preview.js")
     div.container
         div.row
             div(class="col-xl-12 main")
@@ -8,12 +9,14 @@ block content
                     div.row
                         div.col-xl-6
                             h1 Target
-                            img(src="../images/personal_info_banner.jpg" class="image_select" alt="Unknown error")
-                            input(type="file" name="target_image" accept="image/*")
+                            img(id="target_image_preview" src="../images/target_example.jpg" class="image_select" alt="Unknown error")
+                            br
+                            input(id="target_image_select" type="file" name="target_image" accept="image/*")
                         div.col-xl-6
                             h1 Style
-                            img(src="../images/personal_info_banner.jpg" class="image_select" alt="Unknown error")
-                            input(type="file" name="style_image" accept="image/*")
+                            img(id="style_image_preview" src="../images/style_example.jpg" class="image_select" alt="Unknown error")
+                            br
+                            input(id="style_image_select" type="file" name="style_image" accept="image/*")
                 br
 
                 div.row
