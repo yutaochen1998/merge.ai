@@ -7,8 +7,8 @@ block content
             div(class="col-xl-12 main")
                 div.row
                     div.col-xl-6
-                        h1 Target
-                        img(src=target_image_preview class="image_select" alt="Unknown error")
+                        h1 Content
+                        img(src=content_image_preview class="image_select" alt="Unknown error")
                     div.col-xl-6
                         h1 Style
                         img(src=style_image_preview class="image_select" alt="Unknown error")
@@ -20,7 +20,10 @@ block content
                         img(id="image_result" src="../images/result_loading.gif" class="image_select" alt="Unknown error")
                 br
                 div.row
-                    div.col-xl-4
+                    div.col-xl-2
                     div.col-xl-4
                         input(type="button" onclick="window.open('/merge_image_page', '_self')" value="Try a new one🔙")
                     div.col-xl-4
+                        a(href="" id="download_link" download="result")
+                            input(id="download_button" type="button" value="Download⏬" disabled="true")
+                    div.col-xl-2

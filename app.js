@@ -269,22 +269,22 @@ app.get('/merge_image_page', function (req, res) {
 });
 
 app.post('/merge_image', function(req, res) {
-    if (req.files && req.files.target_image && req.files.style_image) {
+    if (req.files && req.files.content_image && req.files.style_image) {
         /*
-        req.session.target_image = Buffer.from(req.files.target_image.data).toString('base64');
-        req.session.target_image_type = req.files.target_image.mimetype.split("/")[1];
+        req.session.content_image = Buffer.from(req.files.content_image.data).toString('base64');
+        req.session.content_image_type = req.files.content_image.mimetype.split("/")[1];
         req.session.style_image = Buffer.from(req.files.style_image.data).toString('base64');
         req.session.style_image_type = req.files.style_image.mimetype.split("/")[1];
          */
 
         //randomly generated string
-        const target_image_name = crypto.randomBytes(16).toString('hex') + "." + req.files.target_image.mimetype.split("/")[1];
+        const content_image_name = crypto.randomBytes(16).toString('hex') + "." + req.files.content_image.mimetype.split("/")[1];
         const style_image_name = crypto.randomBytes(16).toString('hex') + "." + req.files.style_image.mimetype.split("/")[1];
         const result_image_name = crypto.randomBytes(16).toString('hex') + ".png";
 
-        fs.writeFile("temp/" + target_image_name, Buffer.from(req.files.target_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
+        fs.writeFile("temp/" + content_image_name, Buffer.from(req.files.content_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
             if (err) throw err;
-            console.log('target image created');
+            console.log('content image created');
         });
         fs.writeFile("temp/" + style_image_name, Buffer.from(req.files.style_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
             if (err) throw err;
@@ -292,14 +292,14 @@ app.post('/merge_image', function(req, res) {
         });
 
         const path_prefix = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/temp/";
-        req.session.target_path = path_prefix + target_image_name;
+        req.session.content_path = path_prefix + content_image_name;
         req.session.style_path = path_prefix + style_image_name;
         req.session.result_path = path_prefix + result_image_name;
 
         /*
         const spawn = require("child_process").spawn;
         const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
-        const pythonProcess = spawn('python',[neural_network_path, target_path, style_path, result_path]);
+        const pythonProcess = spawn('python',[neural_network_path, content_path, style_path, result_path]);
         pythonProcess.stdout.on('data', (data) => {
             // Do something with the data returned from python script
             console.log(data.toString());
@@ -310,7 +310,7 @@ app.post('/merge_image', function(req, res) {
             title: 'Wait for the magic',
             profile_photo_content_type_top_left: req.session.profile_photo_content_type,
             profile_photo_top_left: req.session.profile_photo_data,
-            target_image_preview: "../temp" + req.session.target_path.split("temp")[1],
+            content_image_preview: "../temp" + req.session.content_path.split("temp")[1],
             style_image_preview: "../temp" + req.session.style_path.split("temp")[1]
         });
     } else {
@@ -329,13 +329,20 @@ app.ws('/websocket_image_deliver', (ws, req) => {
     console.log("Client connected to websocket, user ID: " + userID);
 
     const spawn = require("child_process").spawn;
-    const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
-    const pythonProcess = spawn('python',[neural_network_path, req.session.target_path, req.session.style_path, req.session.result_path]);
+    const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/test_2.py";
+    const pythonProcess = spawn('python',[neural_network_path, req.session.content_path, req.session.style_path, req.session.result_path]);
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
-        console.log(data.toString().trim());
-        ws.send(JSON.stringify({result_path: "../temp" + req.session.result_path.split("temp")[1]}));
+        let msg = JSON.parse(data.toString().trim());
 
+        if (msg.type === "progress") {
+            console.log("Progress: " + msg.value)
+        } else if (msg.type === "time") {
+            console.log("Time elapsed: " + msg.value)
+        } else {
+            console.log(msg.type);
+            ws.send(JSON.stringify({result_path: "../temp" + req.session.result_path.split("temp")[1]}));
+        }
     });
 
     ws.on('message', data => {
@@ -353,7 +360,7 @@ app.ws('/websocket_image_deliver', (ws, req) => {
         //delete disconnected instance
         delete connections[userID];
         console.log("Client disconnected to websocket, user ID: " + userID);
-        for (let path of [req.session.target_path, req.session.style_path, req.session.result_path]) {
+        for (let path of [req.session.content_path, req.session.style_path, req.session.result_path]) {
             fs.unlink(path, (err) => {
                 if (err && err.code === 'ENOENT') {
                     console.log("File doesn't exist, nothing to be done");

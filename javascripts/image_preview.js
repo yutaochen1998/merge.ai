@@ -12,8 +12,8 @@ $(document).ready(function() {
         }
     }
 
-    $("#target_image_select").change(function() {
-        readURL(this, "#target_image_preview");
+    $("#content_image_select").change(function() {
+        readURL(this, "#content_image_preview");
     });
 
     $("#style_image_select").change(function() {

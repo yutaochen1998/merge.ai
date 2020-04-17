@@ -104,6 +104,22 @@ input.start:hover {
     background-color: #800080;
 }
 
+#download_button:disabled {
+    background-color: #808080;
+}
+
+#download_button:disabled:hover {
+    background-color: #404040;
+}
+
+#download_button:enabled {
+    background-color: #73AD21;
+}
+
+#download_button:enabled:hover {
+    background-color: #3a5711;
+}
+
 .profile_photo {
     width: 75px;
     height: 75px;
