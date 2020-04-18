@@ -296,16 +296,6 @@ app.post('/merge_image', function(req, res) {
         req.session.style_path = path_prefix + style_image_name;
         req.session.result_path = path_prefix + result_image_name;
 
-        /*
-        const spawn = require("child_process").spawn;
-        const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
-        const pythonProcess = spawn('python',[neural_network_path, content_path, style_path, result_path]);
-        pythonProcess.stdout.on('data', (data) => {
-            // Do something with the data returned from python script
-            console.log(data.toString());
-        });
-
-         */
         res.render('deliver_page', {
             title: 'Wait for the magic',
             profile_photo_content_type_top_left: req.session.profile_photo_content_type,
@@ -334,15 +324,8 @@ app.ws('/websocket_image_deliver', (ws, req) => {
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         let msg = JSON.parse(data.toString().trim());
-
-        if (msg.type === "progress") {
-            console.log("Progress: " + msg.value)
-        } else if (msg.type === "time") {
-            console.log("Time elapsed: " + msg.value)
-        } else {
-            console.log(msg.type);
-            ws.send(JSON.stringify({result_path: "../temp" + req.session.result_path.split("temp")[1]}));
-        }
+        console.log(JSON.stringify(msg));
+        ws.send(JSON.stringify(msg));
     });
 
     ws.on('message', data => {

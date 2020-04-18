@@ -160,6 +160,8 @@ steps_per_epoch = 5
 
 step = 0
 
+print('{ ' + '"type": "initialized"' + ' }', flush=True)
+
 start = time.time()
 
 for n in range(epochs):
@@ -167,7 +169,7 @@ for n in range(epochs):
         step += 1
         train_step(image)
     #print("Train step: {}".format(step), flush=True)
-    print('{ ' + '"type": "progress", "value": "{:.1f}%"'.format((n+1) / epochs * 100) + '}', flush=True)
+    print('{ ' + '"type": "progress", "value": "{}"'.format(int((n+1) / epochs * 100)) + '}', flush=True)
 
 image.assign(clip_0_1(image))
 end = time.time()
@@ -181,4 +183,4 @@ print('{ ' + '"type": "time", "value": "{:.1f}s"'.format(end-start) + ' }', flus
 result = tensor_to_image(image)
 
 result.save(merged_image_path)
-print('{ ' + '"type": "completed"' + ' }', flush=True)
+print('{ ' + '"type": "result", "value": "../temp{}"'.format(merged_image_path.split("temp")[1]) + ' }', flush=True)
