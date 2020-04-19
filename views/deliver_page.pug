@@ -13,6 +13,14 @@ block content
                         h1 Style
                         img(src=style_image_preview class="image_select" alt="Unknown error")
                 br
+                div.row
+                    div.col-xl-1
+                    div.col-xl-4
+                        p.message Style weight: #{style_weight_select}
+                    div.col-xl-2
+                    div.col-xl-4
+                        p.message Quality: #{quality_select}
+                    div.col-xl-1
                 br
                 div.row
                     div.col-xl-12
@@ -30,6 +38,7 @@ block content
                                 style="width:0%") 0%
                     div.col-xl-2
                 br
+
                 div.row
                     div.col-xl-12
                         img(id="image_result" src="../images/result_loading.gif" class="image_select" alt="Unknown error")
@@ -37,8 +46,8 @@ block content
                 div.row
                     div.col-xl-2
                     div.col-xl-4
-                        input(type="button" onclick="window.open('/merge_image_page', '_self')" value="Try a new one🔙")
+                        input(type="button" onclick="window.open('/merge_image_page', '_self')" value="Make a new one🔙")
                     div.col-xl-4
-                        a(href="" id="download_link" download="result")
+                        a(href="" id="download_link" download="result[" + style_weight_select + "," + quality_select + "]")
                             input(id="download_button" type="button" value="Download⏬" disabled="true")
                     div.col-xl-2

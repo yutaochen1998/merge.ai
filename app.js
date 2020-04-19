@@ -278,6 +278,9 @@ app.post('/merge_image', function(req, res) {
          */
 
         //randomly generated string
+        req.session.style_weight_select = req.body.style_weight_select;
+        req.session.quality_select = req.body.quality_select;
+
         const content_image_name = crypto.randomBytes(16).toString('hex') + "." + req.files.content_image.mimetype.split("/")[1];
         const style_image_name = crypto.randomBytes(16).toString('hex') + "." + req.files.style_image.mimetype.split("/")[1];
         const result_image_name = crypto.randomBytes(16).toString('hex') + ".png";
@@ -301,7 +304,9 @@ app.post('/merge_image', function(req, res) {
             profile_photo_content_type_top_left: req.session.profile_photo_content_type,
             profile_photo_top_left: req.session.profile_photo_data,
             content_image_preview: "../temp" + req.session.content_path.split("temp")[1],
-            style_image_preview: "../temp" + req.session.style_path.split("temp")[1]
+            style_image_preview: "../temp" + req.session.style_path.split("temp")[1],
+            style_weight_select: req.session.style_weight_select,
+            quality_select: req.session.quality_select
         });
     } else {
         res.redirect("/merge_image_page")
@@ -319,8 +324,14 @@ app.ws('/websocket_image_deliver', (ws, req) => {
     console.log("Client connected to websocket, user ID: " + userID);
 
     const spawn = require("child_process").spawn;
-    const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/test_2.py";
-    const pythonProcess = spawn('python',[neural_network_path, req.session.content_path, req.session.style_path, req.session.result_path]);
+    const neural_network_path = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/python/neural_style_transfer.py";
+    const pythonProcess = spawn('python',[
+        neural_network_path,
+        req.session.content_path,
+        req.session.style_path,
+        req.session.result_path,
+        req.session.style_weight_select,
+        req.session.quality_select]);
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
         let msg = JSON.parse(data.toString().trim());

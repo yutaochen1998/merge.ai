@@ -17,6 +17,26 @@ block content
                             img(id="style_image_preview" src="../images/style_example.jpg" class="image_select" alt="Unknown error")
                             br
                             input(id="style_image_select" type="file" name="style_image" accept="image/*")
+
+                    br
+                    div.row
+                        div.col-xl-1
+                        div.col-xl-4
+                            p Style weight
+                            select(name="style_weight_select" id="style_weight_select")
+                                option(value="Realistic +") Realistic +
+                                option(value="Realistic") Realistic
+                                option(value="Balanced", selected="selected") Balanced
+                                option(value="Artistic") Artistic
+                                option(value="Artistic +") Artistic +
+                        div.col-xl-2
+                        div.col-xl-4
+                            p Quality
+                            select(name="quality_select" id="quality_select")
+                                option(value="Low") Low
+                                option(value="Normal", selected="selected") Normal
+                                option(value="High") High
+                        div.col-xl-1
                 br
 
                 div.row
