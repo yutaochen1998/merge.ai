@@ -287,11 +287,11 @@ app.post('/merge_image', function(req, res) {
 
         fs.writeFile("temp/" + content_image_name, Buffer.from(req.files.content_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
             if (err) throw err;
-            console.log('content image created');
+            console.log('Content image created');
         });
         fs.writeFile("temp/" + style_image_name, Buffer.from(req.files.style_image.data).toString('base64'), {encoding: 'base64'}, function(err) {
             if (err) throw err;
-            console.log('style image created');
+            console.log('Style image created');
         });
 
         const path_prefix = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/temp/";
@@ -334,20 +334,9 @@ app.ws('/websocket_image_deliver', (ws, req) => {
         req.session.quality_select]);
     pythonProcess.stdout.on('data', (data) => {
         // Do something with the data returned from python script
+        console.log(data.toString().trim());
         let msg = JSON.parse(data.toString().trim());
-        console.log(JSON.stringify(msg));
         ws.send(JSON.stringify(msg));
-    });
-
-    ws.on('message', data => {
-
-        const data_parsed = JSON.parse(data);
-
-        if (data_parsed.message) {
-           console.log("Message received: " + data_parsed.message);
-           ws.send(JSON.stringify({message: data_parsed.message}));
-           console.log("Message sent: " + data_parsed.message);
-        }
     });
 
     ws.on('close', () => {

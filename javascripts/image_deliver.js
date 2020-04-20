@@ -12,18 +12,15 @@ $(document).ready(function() {
 
         const msg = JSON.parse(event.data);
         if (msg.type === "progress") {
-            console.log("Progress: " + msg.value);
             render_progress.attr("aria-valuenow", msg.value);
             render_progress.attr("style", "width:" + msg.value + "%");
             render_progress.text(msg.value + "%");
         } else if (msg.type === "initialized") {
             initialization.hide("fast");
         } else if (msg.type === "time") {
-            console.log("Time elapsed: " + msg.value);
             render_progress.attr("class", "progress-bar bg-success progress-bar-striped");
             render_progress.text("Completed - Time elapsed: " + msg.value);
         } else {
-            console.log("result path: " + msg.value);
             image_result.attr("src", msg.value);
             download_link.attr("href", msg.value);
             download_button.attr("disabled", false);
