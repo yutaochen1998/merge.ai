@@ -145,14 +145,14 @@ class StyleContentModel(tf.keras.models.Model):
         inputs = inputs*255.0
         preprocessed_input = tf.keras.applications.vgg16.preprocess_input(inputs)
         outputs = self.vgg(preprocessed_input)
-        style_outputs, content_outputs = (outputs[:self.num_style_layers], 
+        style_outputs, content_outputs = (outputs[:self.num_style_layers],
                                           outputs[self.num_style_layers:])
 
         style_outputs = [gram_matrix(style_output)
                          for style_output in style_outputs]
 
-        content_dict = {content_name:value 
-                        for content_name, value 
+        content_dict = {content_name:value
+                        for content_name, value
                         in zip(self.content_layers, content_outputs)}
 
         style_dict = {style_name:value
