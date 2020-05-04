@@ -118,8 +118,6 @@ quality_select = sys.argv[5]
 content_image = load_img(content_image_path)
 style_image = load_img(style_image_path)
 
-content_shape = content_image.get_shape().as_list()
-
 # Content layer of interest
 content_layers = ['block1_conv2']
 
