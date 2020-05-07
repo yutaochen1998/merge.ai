@@ -92,6 +92,7 @@ def train_step(image):
 
 
 def get_parameters(style_weight_select, quality_select):
+    # default = 50
     style_weight = 50
     if style_weight_select == "Realistic +":
         style_weight = 1.0
@@ -101,6 +102,7 @@ def get_parameters(style_weight_select, quality_select):
         style_weight = 100
     if style_weight_select == "Artistic +":
         style_weight = 1000
+    # default = 100
     epochs = 100
     if quality_select == "Low":
         epochs = 50
