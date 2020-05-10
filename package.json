@@ -14,11 +14,11 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
     "express-ws": "^4.0.0",
-    "mongoose": "^5.9.7",
+    "mongoose": "^5.9.13",
     "pug": "^2.0.4"
   },
   "devDependencies": {
-    "express-session": "^1.17.0",
-    "mocha": "^7.1.1"
+    "express-session": "^1.17.1",
+    "mocha": "^7.1.2"
   }
 }
