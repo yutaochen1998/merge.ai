@@ -74,7 +74,7 @@ app.post('/sign_up', function(req, res) {
                 email: email,
                 password: password,
                 //bellow are reserved as placeholder
-                profile_photo: {data: fs.readFileSync('images/default_profile_photo.png').toString('base64'),
+                profile_photo: {data: fs.readFileSync('images/general/default_profile_photo.png').toString('base64'),
                     content_type: 'image/png'},
             };
             db.collection('Accounts').insertOne(new_account, function(err) {

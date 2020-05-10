@@ -40,14 +40,14 @@ h1#main_title {
 }
 
 body.welcome_page {
-    background-image: url('../images/background_welcome.jpg');
+    background-image: url('../images/general/background_welcome.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
 }
 
 body.general_page {
-    background-image: url('../images/background_general.jpg');
+    background-image: url('../images/general/background_general.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -163,7 +163,15 @@ input.start:hover {
 
 .banner {
     width: 100%;
-    transition: 0.5s;
+}
+
+.gallery {
+    width: 100%;
+    height: 350px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
 }
 
 .image_select {
