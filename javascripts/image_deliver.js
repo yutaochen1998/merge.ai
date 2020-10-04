@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     const port = 3000;
-    const connection = new WebSocket('ws://localhost:' + port + '/websocket_image_deliver');
+    const connection = new WebSocket('ws://192.168.1.245:' + port + '/websocket_image_deliver');
     const image_result = $("#image_result");
     const download_link = $("#download_link");
     const download_button = $("#download_button");
