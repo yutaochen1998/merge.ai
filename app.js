@@ -42,7 +42,7 @@ db.once('open', function() {
 });
 
 //start server and render homepage
-const port = 3000;
+const port = 4000;
 app.get('/', function(req, res) {
     res.set({
         'Access-Control-Allow-Origin': '*'
@@ -63,7 +63,7 @@ app.post('/sign_up', function(req, res) {
     const email = req.body.email_sign_up;
     let password = req.body.password_sign_up;
 
-    db.collection('Accounts').findOne({$or: [{username: username}, {email: email}]}, function (err, result) {
+    db.collection('Accounts_Merge_AI').findOne({$or: [{username: username}, {email: email}]}, function (err, result) {
         if (!result) {
 
             //hash password before saving to the database
@@ -77,7 +77,7 @@ app.post('/sign_up', function(req, res) {
                 profile_photo: {data: fs.readFileSync('images/general/default_profile_photo.png').toString('base64'),
                     content_type: 'image/png'},
             };
-            db.collection('Accounts').insertOne(new_account, function(err) {
+            db.collection('Accounts_Merge_AI').insertOne(new_account, function(err) {
                 if (err) throw err;
                 console.log("Account registration successful");
             });
@@ -100,7 +100,7 @@ app.post('/login', function(req, res) {
     const email = req.body.email_login;
     let password = req.body.password_login;
 
-    db.collection('Accounts').findOne({email: email}, function (err, result) {
+    db.collection('Accounts_Merge_AI').findOne({email: email}, function (err, result) {
         if (err) throw err;
         if (!result) {
             console.log("Account doesn't exists");
@@ -161,7 +161,7 @@ app.post('/change_username', function(req, res) {
 
     let username = req.body.username_change;
 
-    db.collection('Accounts').findOne({email: req.session.email}, function (err, result) {
+    db.collection('Accounts_Merge_AI').findOne({email: req.session.email}, function (err, result) {
         if (err) throw err;
         if (username === result.username) {
             res.render('change_username_result',
@@ -173,7 +173,7 @@ app.post('/change_username', function(req, res) {
                 });
             console.log("Same username, failed to commit");
         } else {
-            db.collection("Accounts").updateOne({email: req.session.email},
+            db.collection("Accounts_Merge_AI").updateOne({email: req.session.email},
                 {$set: {username: username}}, function(err) {
                     if (err) throw err;
                 });
@@ -207,7 +207,7 @@ app.post('/change_password', function(req, res) {
     //hash password before comparison
     password = crypto.createHmac('sha1', password).update(password).digest('hex');
 
-    db.collection('Accounts').findOne({email: req.session.email}, function (err, result) {
+    db.collection('Accounts_Merge_AI').findOne({email: req.session.email}, function (err, result) {
         if (err) throw err;
         if (password === result.password) {
             res.render('change_password_result',
@@ -221,7 +221,7 @@ app.post('/change_password', function(req, res) {
                 });
             console.log("Same password, failed to commit");
         } else {
-            db.collection("Accounts").updateOne({email: req.session.email},
+            db.collection("Accounts_Merge_AI").updateOne({email: req.session.email},
                 {$set: {password: password}}, function(err) {
                     if (err) throw err;
                 });
@@ -251,7 +251,7 @@ app.get('/delete_account_confirm', function (req, res) {
 
 //handle delete account request
 app.get('/delete_account', function(req, res) {
-    db.collection('Accounts').deleteOne({email: req.session.email}, function(err) {
+    db.collection('Accounts_Merge_AI').deleteOne({email: req.session.email}, function(err) {
         if (err) throw err;
     });
     console.log('Account delete successful, user ID: ' + req.session.email);
