@@ -296,6 +296,7 @@ app.post('/merge_image', function(req, res) {
 
         const path_prefix = "C:/My Stuff/MyCodes/Final Year Project/merge.ai/temp/";
         req.session.content_path = path_prefix + content_image_name;
+		
         req.session.style_path = path_prefix + style_image_name;
         req.session.result_path = path_prefix + result_image_name;
 

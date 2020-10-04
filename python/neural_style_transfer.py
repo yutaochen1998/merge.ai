@@ -4,6 +4,7 @@ import PIL.Image
 import time
 import sys
 
+
 def tensor_to_image(tensor):
     tensor = tensor * 255
     tensor = np.array(tensor, dtype=np.uint8)
@@ -18,14 +19,6 @@ def load_img(path_to_img):
     img = tf.io.read_file(path_to_img)
     img = tf.image.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
-
-    #shape = tf.cast(tf.shape(img)[:-1], tf.float32)
-    #long_dim = max(shape)
-    #scale = max_dim / long_dim
-
-    #new_shape = tf.cast(shape * scale, tf.int32)
-
-    #img = tf.image.resize(img, new_shape)
     img = img[tf.newaxis, :]
     return img
 
@@ -110,6 +103,9 @@ def get_parameters(style_weight_select, quality_select):
         epochs = 200
     return style_weight, epochs
 
+#gpus = tf.config.list_physical_devices('GPU')
+#for gpu in gpus:
+#    tf.config.experimental.set_memory_growth(gpu, True)
 
 content_image_path = sys.argv[1]
 style_image_path = sys.argv[2]
@@ -131,7 +127,8 @@ style_layers = ['block2_conv1',
 num_content_layers = len(content_layers)
 num_style_layers = len(style_layers)
 
-class StyleContentModel(tf.keras.models.Model):
+class StyleContentModel(tf.keras.Model):
+
     def __init__(self, style_layers, content_layers):
         super(StyleContentModel, self).__init__()
         self.vgg = vgg_layers(style_layers + content_layers)
@@ -161,6 +158,9 @@ class StyleContentModel(tf.keras.models.Model):
         
         return {'content':content_dict, 'style':style_dict}
 
+
+
+
 extractor = StyleContentModel(style_layers, content_layers)
 
 style_targets = extractor(style_image)['style']
@@ -169,7 +169,7 @@ content_targets = extractor(content_image)['content']
 image = tf.Variable(content_image)
 
 # optimal: 0.05
-opt = tf.optimizers.Adam(learning_rate=0.05)
+opt = tf.keras.optimizers.Adam(learning_rate=0.05)
 
 style_weight, epochs = get_parameters(style_weight_select, quality_select)
 content_weight=1.0
