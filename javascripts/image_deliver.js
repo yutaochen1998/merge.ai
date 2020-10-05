@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    const port = 4000;
+    const port = 80;
     const connection = new WebSocket('ws://192.168.1.245:' + port + '/websocket_image_deliver');
     const image_result = $("#image_result");
     const download_link = $("#download_link");

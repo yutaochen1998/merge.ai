@@ -42,7 +42,7 @@ db.once('open', function() {
 });
 
 //start server and render homepage
-const port = 4000;
+const port = 80;
 app.get('/', function(req, res) {
     res.set({
         'Access-Control-Allow-Origin': '*'
