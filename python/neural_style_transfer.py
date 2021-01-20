@@ -3,7 +3,13 @@ import numpy as np
 import PIL.Image
 import time
 import sys
+from adabelief_tf import AdaBeliefOptimizer
 
+# constraint GPU memory usage so that it only takes memory as much as it needs
+gpus = tf.config.list_physical_devices('GPU')
+for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
+    
 
 def tensor_to_image(tensor):
     tensor = tensor * 255
@@ -15,21 +21,12 @@ def tensor_to_image(tensor):
 
 
 def load_img(path_to_img):
-    max_dim = 2048
+    # max_dim = 2048
     img = tf.io.read_file(path_to_img)
-    img = tf.image.decode_image(img, channels=3)
+    img = tf.io.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
     img = img[tf.newaxis, :]
     return img
-
-
-def imshow(image, title=None):
-    if len(image.shape) > 3:
-        image = tf.squeeze(image, axis=0)
-
-    plt.imshow(image)
-    if title:
-        plt.title(title)
 
 
 def vgg_layers(layer_names):
@@ -103,9 +100,6 @@ def get_parameters(style_weight_select, quality_select):
         epochs = 200
     return style_weight, epochs
 
-#gpus = tf.config.list_physical_devices('GPU')
-#for gpu in gpus:
-#    tf.config.experimental.set_memory_growth(gpu, True)
 
 content_image_path = sys.argv[1]
 style_image_path = sys.argv[2]
@@ -139,7 +133,7 @@ class StyleContentModel(tf.keras.Model):
         
     def call(self, inputs):
         # Expects float input in [0,1]
-        inputs = inputs*255.0
+        inputs = inputs * 255.
         preprocessed_input = tf.keras.applications.vgg16.preprocess_input(inputs)
         outputs = self.vgg(preprocessed_input)
         style_outputs, content_outputs = (outputs[:self.num_style_layers],
@@ -169,11 +163,12 @@ content_targets = extractor(content_image)['content']
 image = tf.Variable(content_image)
 
 # optimal: 0.05
-opt = tf.keras.optimizers.Adam(learning_rate=0.05)
+#opt = tf.keras.optimizers.Adam(learning_rate=0.05)
+opt = AdaBeliefOptimizer(learning_rate=0.05, rectify=False, print_change_log=False)
 
 style_weight, epochs = get_parameters(style_weight_select, quality_select)
-content_weight=1.0
-total_variation_weight=style_weight / 1000
+content_weight = 1.0
+total_variation_weight = style_weight / 1000
 
 print('{ ' + '"type": "initialized"' + ' }', flush=True)
 
