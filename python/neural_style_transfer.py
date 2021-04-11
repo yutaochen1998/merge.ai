@@ -14,27 +14,23 @@ for gpu in gpus:
 def tensor_to_image(tensor):
     tensor = tensor * 255
     tensor = np.array(tensor, dtype=np.uint8)
-    if np.ndim(tensor) > 3:
-        assert tensor.shape[0] == 1
-        tensor = tensor[0]
+    tensor = np.squeeze(tensor)
     return PIL.Image.fromarray(tensor)
 
 
 def load_img(path_to_img):
-    # max_dim = 2048
     img = tf.io.read_file(path_to_img)
     img = tf.io.decode_image(img, channels=3)
     img = tf.image.convert_image_dtype(img, tf.float32)
-    img = img[tf.newaxis, :]
+    img = tf.expand_dims(img, 0)
     return img
 
 
 def vgg_layers(layer_names):
     # Load VGG-16 with weights trained on imagenet
-    vgg = tf.keras.applications.VGG16(include_top=False, weights='imagenet')
-    outputs = [vgg.get_layer(name).output for name in layer_names]
-
-    model = tf.keras.Model([vgg.input], outputs)
+    pre_trained_model = tf.keras.applications.VGG16(include_top=False, weights='imagenet')
+    outputs = [pre_trained_model.get_layer(name).output for name in layer_names]
+    model = tf.keras.Model(pre_trained_model.inputs, outputs)
     return model
 
 
@@ -67,6 +63,7 @@ def style_content_loss(outputs):
                              for name in content_outputs.keys()])
     content_loss *= content_weight / num_content_layers
     loss = style_loss + content_loss
+    #loss = style_loss
     
     return loss
 
@@ -110,13 +107,15 @@ quality_select = sys.argv[5]
 content_image = load_img(content_image_path)
 style_image = load_img(style_image_path)
 
+
 # Content layer of interest
-content_layers = ['block1_conv2']
+content_layers = ['block1_conv1']
 
 # Style layer of interest
 style_layers = ['block2_conv1',
                 'block3_conv1',
                 'block4_conv1']
+
 
 num_content_layers = len(content_layers)
 num_style_layers = len(style_layers)
@@ -168,7 +167,7 @@ opt = AdaBeliefOptimizer(learning_rate=0.05, rectify=False, print_change_log=Fal
 
 style_weight, epochs = get_parameters(style_weight_select, quality_select)
 content_weight = 1.0
-total_variation_weight = style_weight / 1000
+total_variation_weight = style_weight / 2000
 
 print('{ ' + '"type": "initialized"' + ' }', flush=True)
 
